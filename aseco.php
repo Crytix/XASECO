@@ -1,30 +1,31 @@
 <?php
-/* vim: set noexpandtab tabstop=2 softtabstop=2 shiftwidth=2: */
 
 /**
  * Projectname: XASECO (formerly ASECO/RASP)
+ * XASECO, the popular server controllers for TrackMania (abbreviated TM).
  *
- * Requires: PHP version 5, MySQL version 4/5
+ * Copyright (C) 2021  Andreas 'Crytix' Schlaupitz <me@crytix.ws>
  *
- * LICENSE: This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as published
- * by the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Releases: https://github.com/Crytix/XASECO/releases
+ * Bug Tracker: https://github.com/Crytix/XASECO/issues
+ * Documentation: https://github.com/Crytix/XASECO/wiki
+ * Repository: https://github.com/Crytix/XASECO
+ *
+ * XASECO is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (GPL-3.0-only or GPL-3.0-or-later) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- *
- * @license             http://www.gnu.org/copyleft/gpl.html GNU GPL
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored & copyright 2006 by Florian Schnell <floschnell@gmail.com>
- *
- * Re-authored & copyright May 2007 - Jul 2013 by Xymph <tm@gamers.org>
+ * Re-authored & copyright May 2007 - Jul 2013 by Frans P. de Vries <tm@gamers.org>
  *
  * Visit the official site at http://www.xaseco.org/
  */
@@ -46,28 +47,28 @@ require_once('includes/rasp.settings.php');  // specific to the RASP plugins
 
 // add abbreviations for some chat commands?
 // /admin -> /ad, /jukebox -> /jb, /autojuke -> /aj
-define('ABBREV_COMMANDS', false);
+const ABBREV_COMMANDS = false;
 // disable local & Dedi record relations commands from help lists?
-define('INHIBIT_RECCMDS', false);
+const INHIBIT_RECCMDS = false;
 // separate logs by month in logs/ dir?
-define('MONTHLY_LOGSDIR', false);
+const MONTHLY_LOGSDIR = false;
 // keep UTF-8 encoding in config.xml?
-define('CONFIG_UTF8ENCODE', false);
+const CONFIG_UTF8ENCODE = false;
 
 /**
  * System definitions - no changes below this point
  */
 
 // current project version
-define('XASECO_VERSION', '1.16');
-define('XASECO_TMN', 'http://www.gamers.org/tmn/');
-define('XASECO_TMF', 'http://www.gamers.org/tmf/');
-define('XASECO_TM2', 'http://www.gamers.org/tm2/');
-define('XASECO_ORG', 'http://www.xaseco.org/');
+const XASECO_VERSION = '1.16';
+const XASECO_TMN = 'https://www.gamers.org/tmn/';
+const XASECO_TMF = 'https://www.gamers.org/tmf/';
+const XASECO_TM2 = 'https://www.gamers.org/tm2/';
+const XASECO_ORG = 'https://www.xaseco.org/';
 
 // required official dedicated server builds
-define('TMN_BUILD', '2006-05-30');
-define('TMF_BUILD', '2011-02-21');
+const TMN_BUILD = '2006-05-30';
+const TMF_BUILD = '2011-02-21';
 
 // check current operating system
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
@@ -2363,14 +2364,14 @@ disabled */
 		} else {
 			$query = 'SELECT id FROM players
 			          WHERE login=' . quotedString($login);
-			$result = mysql_query($query);
-			if (mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_row($result);
+			$result = mysqli_query($query);
+			if (mysqli_num_rows($result) > 0) {
+				$row = mysqli_fetch_row($result);
 				$rtn = $row[0];
 			} else {
 				$rtn = 0;
 			}
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 		return $rtn;
 	}  // getPlayerId
@@ -2386,14 +2387,14 @@ disabled */
 		} else {
 			$query = 'SELECT nickname FROM players
 			          WHERE login=' . quotedString($login);
-			$result = mysql_query($query);
-			if (mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_row($result);
+			$result = mysqli_query($query);
+			if (mysqli_num_rows($result) > 0) {
+				$row = mysqli_fetch_row($result);
 				$rtn = $row[0];
 			} else {
 				$rtn = '';
 			}
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 		return $rtn;
 	}  // getPlayerNick
@@ -2439,9 +2440,9 @@ disabled */
 			// check offline players database
 			$query = 'SELECT * FROM players
 			          WHERE login=' . quotedString($param);
-			$result = mysql_query($query);
-			if (mysql_num_rows($result) > 0) {
-				$row = mysql_fetch_object($result);
+			$result = mysqli_query($query);
+			if (mysqli_num_rows($result) > 0) {
+				$row = mysqli_fetch_object($result);
 				// create dummy player object
 				$target = new Player();
 				$target->id = $row->Id;
@@ -2452,7 +2453,7 @@ disabled */
 				$target->wins = $row->Wins;
 				$target->timeplayed = $row->TimePlayed;
 			}
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 
 		// found anyone anywhere?
@@ -2471,14 +2472,14 @@ disabled */
 
 		$query = 'SELECT Id FROM challenges
 		          WHERE Uid=' . quotedString($uid);
-		$res = mysql_query($query);
-		if (mysql_num_rows($res) > 0) {
-			$row = mysql_fetch_row($res);
+		$res = mysqli_query($query);
+		if (mysqli_num_rows($res) > 0) {
+			$row = mysqli_fetch_row($res);
 			$rtn = $row[0];
 		} else {
 			$rtn = 0;
 		}
-		mysql_free_result($res);
+		mysqli_free_result($res);
 		return $rtn;
 	}  // getChallengeId
 
@@ -2559,4 +2560,4 @@ setlocale(LC_NUMERIC, 'C');
 // create an instance of XASECO and run it
 $aseco = new Aseco(false);
 $aseco->run('config.xml');
-?>
+
