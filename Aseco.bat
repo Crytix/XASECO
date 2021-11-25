@@ -2,11 +2,11 @@
 
 rem ****** Set here your php path *******
 
-set INSTPHP=C:\Programme\Apache2\Php5
+set INSTPHP=C:\php5
 
 rem *************************************
 
-PATH=%PATH%;%INSTPHP%;%INSTPHP%\extensions
+PATH=%PATH%;%INSTPHP%;%INSTPHP%\ext
 "%INSTPHP%\php.exe" aseco.php
 
 pause
