@@ -1,5 +1,5 @@
 Track: {TRACK}
- Date: {DATE} - {TIME}
+Date: {DATE} - {TIME}
 Rank  Name
 <!-- Player Data Begin -->
 {RANK}. {NICK} ({LAPTIME}) Team: {TEAM} Points: {POINTS}
